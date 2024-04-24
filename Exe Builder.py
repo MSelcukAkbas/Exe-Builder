@@ -23,7 +23,7 @@ class Exe_builder(wx.Frame):
         super(Exe_builder, self).__init__(*args, **kw)
         
         exe_dizini = dirname(abspath(__file__))
-        ikon_adi = "icon.png"
+        ikon_adi = "Exe Builder.png"
         self.icon_path = join(exe_dizini,     ikon_adi)
         appdata = join(path.expanduser('~'), 'AppData', 'Local', 'Exe_builder')
         makedirs(appdata, exist_ok=True)
