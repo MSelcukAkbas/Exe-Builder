@@ -378,148 +378,21 @@ class Exe_builder(wx.Frame):
         """
         Belirtilen JSON formatındaki veriyi okuyup Dil ayarlarını günceller
         """
-        tr = {
-            # Genel İşlemler
-            "menü": "Menü",
-            "tema": "Temayı Değiştir",
-            "dil": "Dili Değiştir",
-            "kapat": "Kapat",
-            "Yapılandırma": "Yapılandırma",
+        try:
+            with open("language_data.json", 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                tr_data, en_data = data['tr'], data['en']
 
-            # Çalışma Yolu
-            "çalışma_yolu": "Çalışma Yolunu Seç, Konsol yada Pencere",
-            "dosya_klasor": "Tek Klasör Yada Tek Dosya...",
-
-            # Temizleme İşlemi
-            "build": "Build Klasörü ve .Spec Dosyalarını Temizle.",
-            "kalıntı_btn": "Gereksiz Dosyaları Temizle",
-
-            # İkon Seçimi
-            "icon": "Uygulamanız İçin İkon Seçmek için Seçin.",
-            "icon_btn": "İkon Seçme",
-
-            # Çıkış
-            "çıktı_sec": "Yapılan İşlemin Çıktısını Kaydetmek için Seçin.",
-
-            # Hata İşlemleri
-            "hata": "Hata Kayıtları",
-            "hata_mesaji": "Hata Mesajı:",
-            "hata_kaydi_hata": "Hata Kaydı Sırasında Bir Hata Oluştu:",
-            "hata_kaydi_olusturuldu": "Hata Kaydı Oluşturuldu.",
-            "islem_sirinda_hata": "İşlem Sırasında Bir Hata Oluştu:",
-
-            # Dosya ve Klasör Seçimi
-            "dosya_sec": "Dosya Seç",
-            "dosya_secme": "Dosya Seçme",
-            "dosya_secilmedi": "Dosya Seçilmediği İçin İşlem İptal Edildi.",
-            "dosya_degistirildi": "Txt Dosya Uzantısı py Olarak Değiştirildi.",
-            "klasor_sec": "İşlem Dizini Seç",
-            "klasor_degistirildi": "İşlem Dizini Değiştirildi.",
-            "klasor_secilmedi": "İşlem Dizini Seçilmediği İçin İşlem İptal Edildi.",
-
-            # İşlem Yolu ve Çıktı
-            "islem_yolu": "İşlem Yolu",
-            "cikti_kayıt": "Çıktı Kayıt İçin Klasör Seç",
-            "cikti_kayit_uyari": "Klasör Seçilmedi. Dışa Aktarma İşlemi İptal Edildi.",
-
-            # Dil Seçimi
-            "dil_secimi": "Lütfen Bir Dil Seçin / Please Select a Language",
-            "dil_degistirme_basarili": "Dil Değiştirme İşlemi Başarıyla Gerçekleştirildi. Uygulamayı Yeniden Başlatmanız Gerekebilir.",
-
-            # Hata ve Kalıntı Bilgileri
-            "kalan_hata_kaydi": "Toplam Hata Kaydı",
-            "hata_icerik": "Hata İçeriği:",
-            "kalan_hata": "Kalan Hata:",
-            "islem_tamamlandi": "İşlem Tamamlandı.",
-            "kalinti_temizleme_basarili": "Kalıntılar Temizlendi.",
-            "kalinti_temizleme_hata": "Kalıntılar Temizlenirken Bir Hata Oluştu:",
-
-            # Dışa Aktarma
-            "disa_aktarma_basarili": "Dışa Aktarma İşlemi Başarıyla Tamamlandı.",
-            "disa_aktarma_hata": "Dışa Aktarma İşlemi Sırasında Bir Hata Oluştu:",
-
-            # İşlem Başlatma ve Durum
-            "islem_baslat": "İşlemi Başlat",
-            "islem_yurutuluyor": "İşlem Devam Ediyor...",
-        }
-
-        en = {
-            # Genel İşlemler
-            "menü": "Menu",
-            "tema": "Change Theme",
-            "dil": "Change Language",
-            "kapat": "Close",
-            "Yapılandırma": "Configuration",
-
-            # Çalışma Yolu
-            "çalışma_yolu": "Console or Window",
-            "dosya_klasor": "File or Folder",
-
-            # İşlem Başlatma ve Durum
-            "islem_baslat": "Start Operation",
-            "islem_yurutuluyor": "Operation in Progress...",
-
-            # Temizleme İşlemi
-            "build": "Clean Build Folder and .Spec Files.",
-            "kalıntı_btn": "Clean Junk Files",
-
-            # İkon Seçimi
-            "icon": "Select to Choose Icon for Your Application",
-            "icon_btn": "Select Icon",
-
-            # Çıkış
-            "çıktı_sec": "Select to Save the Output of the Operation Performed.",
-
-            # Hata İşlemleri
-            "hata": "Error Logs",
-            "hata_mesaji": "Error Message:",
-            "hata_kaydi_hata": "An Error Occurred While Creating Error Logs:",
-            "hata_kaydi_olusturuldu": "Error Log Created.",
-            "islem_sirinda_hata": "An Error Occurred During the Operation:",
-
-            # Dosya ve Klasör Seçimi
-            "dosya_sec": "Select File",
-            "dosya_secme": "File Selection",
-            "dosya_secilmedi": "File Not Selected, Operation Cancelled.",
-            "dosya_degistirildi": "Txt File Extension Changed to Py.",
-            "klasor_sec": "Select Directory",
-            "klasor_degistirildi": "Directory Changed",
-            "klasor_secilmedi": "Directory Not Selected, Operation Cancelled.",
-
-            # İşlem Yolu ve Çıktı
-            "islem_yolu": "Operation Path",
-            "cikti_kayıt": "Select Folder for Output",
-            "cikti_kayit_uyari": "Folder Not Selected. Export Operation Cancelled.",
-
-            # Dil Seçimi
-            "dil_secimi": "Please Select a Language.",
-            "dil_degistirme_basarili": "Language Changed Successfully. You May Need to Restart the Application.",
-
-            # Hata ve Kalıntı Bilgileri
-            "kalan_hata_kaydi": "Total Error Logs:",
-            "hata_icerik": "Error Content:",
-            "kalan_hata": "Remaining Errors:",
-            "islem_tamamlandi": "Operation Completed.",
-            "kalinti_temizleme_basarili": "Residue Cleared.",
-            "kalinti_temizleme_hata": "An Error Occurred While Cleaning the Residues:",
-
-            # Dışa Aktarma
-            "disa_aktarma_basarili": "Export Operation Completed Successfully.",
-            "disa_aktarma_hata": "An Error Occurred During the Export Operation:",
-            "islem_sirinda_hata": "An error occurred during the operation:"}
-        
-        
-        if exists(self.language_path):
-            with open(self.language_path, "r" ,encoding="utf-8") as dosya:
-                veri = json.load(dosya)
-                dil = veri["Dil"]
-                if dil == "English":
-                    return en
-                else :
-                    return tr
-        else: 
-            return tr
-
+            if exists(self.language_path):
+                with open(self.language_path, "r", encoding="utf-8") as dosya:
+                    dil = json.load(dosya)["Dil"]
+                    return en_data if dil == "English" else tr_data
+            return tr_data
+        except Exception:
+            wx.LogError("Yapılandırma Hatası")
+            self.kapat()
+            return
+    
 if __name__ == '__main__':
     app = wx.App(False)
     frame = Exe_builder(None)
